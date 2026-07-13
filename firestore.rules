@@ -1,0 +1,33 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Anyone can read the live catalog and video gallery.
+    // Only signed-in admins (checked via custom claim OR your allow-listed
+    // email — adjust to match how you gate /admin in the app) can write.
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if request.auth != null &&
+        request.auth.token.email in ['sweetangels679@gmail.com'];
+    }
+
+    match /videos/{videoId} {
+      allow read: if true;
+      allow write: if request.auth != null &&
+        request.auth.token.email in ['sweetangels679@gmail.com'];
+    }
+
+    // Orders: anyone can create an order (checkout works for guests too).
+    // Only the admin can read the full order list; a signed-in user can
+    // only read their own orders (matched by email).
+    match /orders/{orderId} {
+      allow create: if true;
+      allow read: if request.auth != null &&
+        (request.auth.token.email in ['sweetangels679@gmail.com'] ||
+         resource.data.userEmail == request.auth.token.email);
+      allow update: if request.auth != null &&
+        request.auth.token.email in ['sweetangels679@gmail.com'];
+      allow delete: if false;
+    }
+  }
+}

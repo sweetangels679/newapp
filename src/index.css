@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Signature motif: soft scalloped "cloud" edge, evoking folded swaddle fabric.
+   Used to divide the hero from the page and on featured panels. */
+.scallop-edge {
+  position: relative;
+}
+.scallop-edge::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 28px;
+  background-image: radial-gradient(circle at 10px 0, transparent 12px, var(--scallop-color, #FFF9F2) 13px);
+  background-size: 40px 28px;
+  background-repeat: repeat-x;
+}
+
+/* Visible keyboard focus ring, brand-tinted */
+:focus-visible {
+  outline: 3px solid #E5828C;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Custom scrollbar for horizontal carousels */
+.carousel-scroll::-webkit-scrollbar {
+  height: 6px;
+}
+.carousel-scroll::-webkit-scrollbar-thumb {
+  background: #F0A3A8;
+  border-radius: 999px;
+}
